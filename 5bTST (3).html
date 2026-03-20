@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5bTST – 5b The Stupid Trailer</title>
+
+  <!-- Ruffle Flash emulator -->
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap');
+
+    :root {
+      --sky:    #5ecff5;
+      --sun:    #ffe84d;
+      --accent: #ff6b35;
+      --dark:   #1a1a2e;
+      --panel:  rgba(255,255,255,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Stars */
+    .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .star {
+      position: absolute; border-radius: 50%; background: #fff;
+      animation: twinkle 3s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(1); }
+      to   { opacity: 1;   transform: scale(1.4); }
+    }
+
+    /* Header */
+    header {
+      position: relative; z-index: 10;
+      text-align: center;
+      padding: 2rem 1rem 1.2rem;
+    }
+    .logo-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--sun) 0%, var(--accent) 100%);
+      color: var(--dark);
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      padding: 0.15em 0.55em;
+      border-radius: 1.2rem;
+      box-shadow: 0 6px 32px rgba(255,232,77,0.45);
+      animation: pop-in 0.7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.5) rotate(-6deg); }
+      to   { opacity: 1; transform: scale(1)   rotate(0deg);  }
+    }
+    .tagline {
+      margin-top: 0.5rem;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sky);
+    }
+
+    /* Ruffle player */
+    .player-wrap {
+      position: relative; z-index: 10;
+      width: 100%;
+      max-width: 640px;
+      padding: 0 1rem;
+    }
+    ruffle-player {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border: 3px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(94,207,245,0.2), 0 20px 60px rgba(0,0,0,0.7);
+    }
+
+    /* Info cards */
+    .info-row {
+      position: relative; z-index: 10;
+      display: flex; gap: 1rem;
+      padding: 1.4rem 1rem;
+      max-width: 680px; width: 100%;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .card {
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.13);
+      border-radius: 12px;
+      padding: 1rem 1.3rem;
+      flex: 1 1 180px; min-width: 160px;
+    }
+    .card-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--sun);
+      margin-bottom: 0.4rem;
+    }
+    .card-body { font-size: 0.86rem; color: rgba(255,255,255,0.82); line-height: 1.6; }
+    .card-body a { color: var(--sky); text-decoration: none; }
+    .card-body a:hover { text-decoration: underline; }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 10;
+      text-align: center;
+      padding: 1rem 1rem 2.5rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 2;
+    }
+    footer .credit-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem; color: rgba(255,255,255,0.7);
+      letter-spacing: 0.08em; margin-bottom: 0.3rem;
+    }
+    footer span.hi { color: var(--sky); font-weight: 800; }
+    .ruffle-badge {
+      display: inline-block; margin-top: 0.5rem;
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px; padding: 0.2em 0.9em;
+      font-size: 0.76rem; letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+
+  <header>
+    <div class="logo-badge">5bTST</div>
+    <p class="tagline">5b The Stupid Trailer &nbsp;·&nbsp; Modified BFDIA 5b</p>
+  </header>
+
+  <!-- Ruffle player -->
+  <div class="player-wrap">
+    <ruffle-player id="player"></ruffle-player>
+  </div>
+
+  <div class="info-row">
+    <div class="card">
+      <div class="card-title">About</div>
+      <div class="card-body">
+        A fan-made mod of <strong>BFDIA 5b</strong> featuring
+        <em>The Stupid Trailer</em> lyrics. Powered by
+        <a href="https://ruffle.rs" target="_blank">Ruffle</a>.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Files needed</div>
+      <div class="card-body">
+        Place <code>5b.swf</code> and <code>levels.txt</code>
+        in the same folder as this HTML file.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Controls</div>
+      <div class="card-body">
+        Arrow keys / WASD · Z / Space · R to restart · P to pause
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="credit-title">Credits</div>
+    Original BFDIA 5b by <span class="hi">jacknjellify</span><br>
+    The Stupid Trailer adaptation by <span class="hi">AnimationEpic</span><br>
+    HTML5 port via <span class="hi">Ruffle</span> (open-source Flash emulator)
+    <div class="ruffle-badge">ruffle.rs · Apache 2.0 / MIT</div>
+  </footer>
+
+  <script>
+    // Sprinkle background stars
+    const c = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2.5 + 0.8;
+      s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s`;
+      c.appendChild(s);
+    }
+
+    // Initialize Ruffle properly
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.addEventListener("load", () => {
+      const ruffle = window.RufflePlayer.newest();
+      const player = ruffle.createPlayer();
+      const container = document.getElementById("player");
+      container.replaceWith(player);
+      player.style.width = "100%";
+      player.style.aspectRatio = "4 / 3";
+      player.style.border = "3px solid rgba(255,255,255,0.18)";
+      player.style.borderRadius = "12px";
+      player.style.overflow = "hidden";
+      player.style.boxShadow = "0 0 60px rgba(94,207,245,0.2), 0 20px 60px rgba(0,0,0,0.7)";
+      player.load({
+        url: "5b.swf",
+        allowScriptAccess: true,
+      });
+    });
+  </script>
+
+</body>
+</html>
